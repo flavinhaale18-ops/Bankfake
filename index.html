@@ -1,228 +1,107 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>BancoSim</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
-<style>
-:root{--roxo:#7a2cff;--roxo2:#5a16d6;--bg:#f3f1ff;}
-*{box-sizing:border-box;font-family:Inter,system-ui,Arial}
-body{margin:0;background:var(--bg);color:#222}
-.app{max-width:420px;margin:auto;min-height:100vh;background:#fff;box-shadow:0 0 30px rgba(0,0,0,.1)}
-.header{background:linear-gradient(135deg,var(--roxo),var(--roxo2));color:#fff;padding:18px 16px;border-radius:0 0 24px 24px}
-.header .row{display:flex;align-items:center;justify-content:space-between}
-.avatar{width:44px;height:44px;border-radius:50%;background:#fff3;display:grid;place-items:center;font-size:20px;overflow:hidden}
-.saldo{font-size:28px;font-weight:700;margin-top:8px}
-.sub{opacity:.85;font-size:13px}
-.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px}
-.action{background:#fff;border-radius:16px;padding:12px;box-shadow:0 6px 14px rgba(0,0,0,.08);text-align:center;font-weight:600;cursor:pointer}
-.action span{display:block;font-size:12px;opacity:.7}
-.list{padding:0 16px 80px}
-.item{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 6px 14px rgba(0,0,0,.08);display:flex;justify-content:space-between}
-.modal{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;z-index:10}
-.box{background:#fff;border-radius:20px;padding:16px;width:92%;max-width:380px;max-height:90vh;overflow:auto}
-.btn{background:var(--roxo);color:#fff;border:none;border-radius:12px;padding:12px 14px;width:100%;font-weight:700;margin-top:8px}
-.btn.secondary{background:#eee;color:#333}
-.input{width:100%;padding:12px;border-radius:12px;border:1px solid #ddd;margin-top:8px}
-.watermark{position:fixed;inset:auto 0 8px 0;text-align:center;font-size:11px;opacity:.5}
-.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 14px;border-radius:10px;display:none;z-index:20}
-.card{background:linear-gradient(135deg,#1a1a1a,#333);color:#fff;border-radius:18px;padding:18px;box-shadow:0 10px 24px rgba(0,0,0,.25)}
-.card .brand{display:flex;justify-content:space-between;align-items:center}
-.icon{font-size:22px}
-.qrwrap{display:grid;place-items:center;margin:10px 0}
+    <meta charset="UTF-8">
+    <title>Site Pausado</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-#logoComprovante{width:48px;height:48px;object-fit:contain}
-.receipt-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-</style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 30px;
+            background: #020617;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #facc15;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 14px;
+            font-weight: normal;
+            color: #94a3b8;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #cbd5f5;
+            margin-bottom: 15px;
+        }
+
+        .alert {
+            background: #1e293b;
+            border-left: 5px solid #facc15;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+
+        footer {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #64748b;
+        }
+    </style>
 </head>
 <body>
 
-<div class="app">
-  <div class="header">
-    <div class="row">
-      <div>
-        <div class="sub">BancoSim • Conta</div>
-        <div class="saldo" id="saldo">R$ 50.000,00</div>
-      </div>
-      <div class="avatar" onclick="avatarInput.click()">
-        <img id="avatarImg" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:none">
-        <img id="avatarIcon" src="logo.png" style="width:70%;height:70%;object-fit:contain">
-      </div>
-      <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="setAvatar(event)">
+    <div class="container">
+        <div class="logo">
+            🚧 Site Pausado
+            <span>Manutenção Temporária</span>
+        </div>
+
+        <h1>Este site está temporariamente indisponível</h1>
+
+        <p>
+            O site encontra-se pausado no momento por motivos técnicos e administrativos.
+        </p>
+
+        <div class="alert">
+            <strong>Motivo principal:</strong><br>
+            Pendência relacionada ao pagamento de taxas necessárias para manter o site ativo no
+            <strong>GitHub Pages</strong>.
+        </div>
+
+        <p>
+            Para resolver este problema e reativar o site, favor entrar em contato com o
+            <strong>desenvolvedor responsável por este código</strong>.
+        </p>
+
+        <footer>
+            © 2026 • Todos os direitos reservados
+        </footer>
     </div>
-    <div class="sub">Titular: STJ - Superior tribunal de Justiça</div>
-  </div>
 
-  <div class="actions">
-    <div class="action" onclick="openPix()">⚡<span>Pix</span></div>
-    <div class="action" onclick="openReceive()">📷<span>Receber</span></div>
-    <div class="action" onclick="openScan()">🔍<span>Pagar QR</span></div>
-    <div class="action" onclick="openCard()">💳<span>Cartão</span></div>
-  </div>
-
-  <div class="list" id="history"></div>
-
-  <div style="display:flex;justify-content:center;margin:24px 0;">
-    <img src="logo.png" style="width:120px;opacity:0.25">
-  </div>
-</div>
-
-<div class="watermark">BancoSim • </div>
-<div class="toast" id="toast"></div>
-
-<!-- PIX -->
-<div class="modal" id="pixModal">
-  <div class="box">
-    <h3>Enviar Pix</h3>
-    <input class="input" id="pixNome" placeholder="Nome do destinatário">
-    <input class="input" id="pixChave" placeholder="Chave Pix">
-    <input class="input" id="pixValor" type="number" step="0.01" placeholder="Valor (R$)">
-    <button class="btn" onclick="biometria()">Continuar</button>
-    <button class="btn secondary" onclick="closeAll()">Cancelar</button>
-  </div>
-</div>
-
-<!-- BIOMETRIA -->
-<div class="modal" id="bioModal">
-  <div class="box" style="text-align:center">
-    <h3>Confirme sua identidade</h3>
-    <div style="font-size:60px">🔒</div>
-    <p>Toque para autenticar (simulado)</p>
-    <button class="btn" onclick="confirmarPix()">Autenticar</button>
-  </div>
-</div>
-
-<!-- RECEBER -->
-<div class="modal" id="receiveModal">
-  <div class="box">
-    <h3>Receber</h3>
-    <div style="display:flex;gap:10px;margin-bottom:10px">
-      <button class="btn secondary" onclick="gerarPix()">Pix</button>
-      <button class="btn secondary" onclick="gerarBoleto()">Boleto</button>
-      <button class="btn secondary" onclick="gerarLink()">Link</button>
-    </div>
-    <div class="qrwrap"><canvas id="qr"></canvas></div>
-    <div id="receiveInfo" style="font-size:12px;text-align:center;opacity:.8"></div>
-    <button class="btn secondary" onclick="closeAll()">Fechar</button>
-  </div>
-</div>
-
-<!-- COMPROVANTE -->
-<div class="modal" id="receiptModal">
-  <div class="box" id="receipt">
-    <div class="receipt-header">
-      <img id="logoComprovante" src="logo.png">
-      <h3>Comprovante</h3>
-    </div>
-    <div id="receiptBody"></div>
-    <button class="btn" onclick="downloadPDF()">Baixar PDF</button>
-    <button class="btn secondary" onclick="closeAll()">Voltar</button>
-    <div class="watermark">SIMULADO</div>
-  </div>
-</div>
-
-<!-- CARTÃO -->
-<div class="modal" id="cardModal">
-  <div class="box">
-    <h3>Cartão Virtual</h3>
-    <div class="card">
-      <div class="brand">
-        <div><strong>BancoSim</strong><div class="sub">Virtual</div></div>
-        <div class="icon">💎</div>
-      </div>
-      <div style="margin:20px 0;font-size:22px;letter-spacing:2px">4539 67•• •••• 1029</div>
-      <div>Val: 12/29 &nbsp;&nbsp; CVV: •••</div>
-    </div>
-    <button class="btn secondary" onclick="closeAll()">Fechar</button>
-  </div>
-</div>
-
-<script>
-let saldo = 5000.00;
-const history = document.getElementById('history');
-const saldoEl = document.getElementById('saldo');
-
-function format(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
-function renderSaldo(){saldoEl.innerText = format(saldo)}
-
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.innerText=msg; t.style.display='block';
-  setTimeout(()=>t.style.display='none',2500);
-}
-
-function openPix(){pixModal.style.display='flex'}
-function openReceive(){receiveModal.style.display='flex'; gerarPix()}
-function openScan(){
-  const i=document.createElement("input");
-  i.type="file"; i.accept="image/*";
-  i.onchange=()=>{toast("QR lido (simulado)"); setTimeout(()=>toast("Pagamento concluído"),1200);}
-  i.click();
-}
-function openCard(){cardModal.style.display='flex'}
-function closeAll(){[pixModal,bioModal,receiveModal,receiptModal,cardModal].forEach(m=>m.style.display='none')}
-
-function setAvatar(e){
-  const f=e.target.files[0];
-  if(!f) return;
-  const r=new FileReader();
-  r.onload=()=>{avatarImg.src=r.result;avatarImg.style.display="block";avatarIcon.style.display="none";}
-  r.readAsDataURL(f);
-}
-
-function biometria(){
-  if(!pixValor.value||parseFloat(pixValor.value)<=0) return alert("Valor inválido");
-  pixModal.style.display='none'; bioModal.style.display='flex';
-}
-
-function gerarCodigo(){return Math.random().toString(36).substr(2,10).toUpperCase()}
-function randomCode(n){return Math.random().toString(36).substr(2,n).toUpperCase()}
-
-function confirmarPix(){
-  bioModal.style.display='none';
-  const v=parseFloat(pixValor.value);
-  saldo-=v; renderSaldo();
-  const item=document.createElement("div");
-  item.className="item";
-  item.innerHTML=`<div>${pixNome.value}</div><div>- ${format(v)}</div>`;
-  history.prepend(item);
-
-  const d=new Date();
-  receiptBody.innerHTML=`
-  <p><b>Para:</b> ${pixNome.value}</p>
-  <p><b>Chave:</b> ${pixChave.value}</p>
-  <p><b>Valor:</b> ${format(v)}</p>
-  <p><b>Data:</b> ${d.toLocaleDateString("pt-BR")}</p>
-  <p><b>Hora:</b> ${d.toLocaleTimeString("pt-BR")}</p>
-  <p><b>ID Autenticação:</b> AUT-${gerarCodigo()}</p>
-  <p><b>Protocolo:</b> PRT-${Math.floor(Math.random()*1e9)}</p>
-  <p><b>Status:</b> Concluído</p>`;
-  receiptModal.style.display='flex';
-}
-
-function gerarPix(){
-  const c="PIX-"+randomCode(20);
-  QRCode.toCanvas(qr,c,{width:180});
-  receiveInfo.innerHTML="Chave Pix: "+c;
-}
-function gerarBoleto(){
-  const b=Math.floor(1e46+Math.random()*9e46).toString().slice(0,47);
-  QRCode.toCanvas(qr,b,{width:180});
-  receiveInfo.innerHTML="Código de barras:<br>"+b;
-}
-function gerarLink(){
-  const l="https://pagar.me/"+randomCode(12);
-  QRCode.toCanvas(qr,l,{width:180});
-  receiveInfo.innerHTML="Link: "+l;
-}
-
-function downloadPDF(){
-  html2pdf().from(document.getElementById("receipt")).save("comprovante_simulado.pdf");
-}
-
-renderSaldo();
-</script>
 </body>
 </html>
