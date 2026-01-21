@@ -1,3 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>BancoSim</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f2f4f7;
+  margin:0;
+}
+header{
+  background:#0a58ca;
+  color:#fff;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.avatar{
+  width:40px;height:40px;
+  border-radius:50%;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.avatar img{width:100%}
+
+main{padding:15px}
+
+.card{
+  background:#fff;
+  border-radius:10px;
+  padding:15px;
+  margin-bottom:15px;
+  box-shadow:0 2px 5px rgba(0,0,0,.1)
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.actions button{
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#0a58ca;
+  color:#fff;
+}
+
+.history .item{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #eee;
+  padding:8px 0;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.modal-content{
+  background:#fff;
+  padding:15px;
+  border-radius:10px;
+  width:90%;
+  max-width:350px;
+}
+
+.btn{
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  width:100%;
+}
+.primary{background:#0a58ca;color:#fff}
+.secondary{background:#ccc}
+
+#toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#000;
+  color:#fff;
+  padding:10px 15px;
+  border-radius:20px;
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>BancoSim</div>
+  <div class="avatar">
+    <span id="avatarIcon">👤</span>
+    <img id="avatarImg" style="display:none">
+  </div>
+</header>
+
+<main>
+
+<div class="card">
+  <h3>Saldo disponível</h3>
+  <h2 id="saldo"></h2>
+</div>
+
+<div class="card actions">
+  <button onclick="openPix()">PIX</button>
+  <button onclick="openReceive()">Receber</button>
+  <button onclick="openScan()">Ler QR</button>
+  <button onclick="openCard()">Cartão</button>
+</div>
+
+<div class="card history">
+  <h3>Histórico</h3>
+  <div id="history"></div>
+</div>
+
+</main>
+
+<!-- MODAIS -->
+
+<div class="modal" id="pixModal">
+  <div class="modal-content">
+    <h3>Transferência Pix</h3>
+    <input id="pixNome" placeholder="Nome"><br><br>
+    <input id="pixChave" placeholder="Chave Pix"><br><br>
+    <input id="pixValor" type="number" placeholder="Valor"><br><br>
+    <button class="btn primary" onclick="biometria()">Continuar</button><br><br>
+    <button class="btn secondary" onclick="closeAll()">Fechar</button>
+  </div>
+</div>
+
+<div class="modal" id="bioModal">
+  <div class="modal-content">
+    <h3>Biometria</h3>
+    <p>Simulação de biometria</p>
+    <button class="btn primary" onclick="confirmarPix()">Confirmar</button><br><br>
+    <button class="btn secondary" onclick="closeAll()">Cancelar</button>
+  </div>
+</div>
+
+<div class="modal" id="receiveModal">
+  <div class="modal-content">
+    <h3>Receber</h3>
+    <canvas id="qr"></canvas>
+    <p id="receiveInfo"></p>
+    <button class="btn primary" onclick="gerarPix()">PIX</button><br><br>
+    <button class="btn primary" onclick="gerarBoleto()">Boleto</button><br><br>
+    <button class="btn primary" onclick="gerarLink()">Link</button><br><br>
+    <button class="btn secondary" onclick="closeAll()">Fechar</button>
+  </div>
+</div>
+
+<div class="modal" id="receiptModal">
+  <div class="modal-content" id="receipt">
+    <h3>Comprovante</h3>
+    <div id="receiptBody"></div><br>
+    <button class="btn primary" onclick="downloadPDF()">Baixar PDF</button><br><br>
+    <button class="btn secondary" onclick="closeAll()">Fechar</button>
+  </div>
+</div>
+
+<div class="modal" id="cardModal">
+  <div class="modal-content">
+    <h3>Cartão</h3>
+    <p>Função simulada</p>
+    <button class="btn secondary" onclick="closeAll()">Fechar</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
 <script>
 let saldo = 5000.00;
 const history = document.getElementById('history');
@@ -23,14 +211,6 @@ function openScan(){
 function openCard(){cardModal.style.display='flex'}
 function closeAll(){[pixModal,bioModal,receiveModal,receiptModal,cardModal].forEach(m=>m.style.display='none')}
 
-function setAvatar(e){
-  const f=e.target.files[0];
-  if(!f) return;
-  const r=new FileReader();
-  r.onload=()=>{avatarImg.src=r.result;avatarImg.style.display="block";avatarIcon.style.display="none";}
-  r.readAsDataURL(f);
-}
-
 function biometria(){
   if(!pixValor.value||parseFloat(pixValor.value)<=0) return alert("Valor inválido");
   pixModal.style.display='none'; bioModal.style.display='flex';
@@ -55,8 +235,7 @@ function confirmarPix(){
   <p><b>Valor:</b> ${format(v)}</p>
   <p><b>Data:</b> ${d.toLocaleDateString("pt-BR")}</p>
   <p><b>Hora:</b> ${d.toLocaleTimeString("pt-BR")}</p>
-  <p><b>ID Autenticação:</b> AUT-${gerarCodigo()}</p>
-  <p><b>Protocolo:</b> PRT-${Math.floor(Math.random()*1e9)}</p>
+  <p><b>ID:</b> AUT-${gerarCodigo()}</p>
   <p><b>Status:</b> Concluído</p>`;
   receiptModal.style.display='flex';
 }
@@ -83,5 +262,6 @@ function downloadPDF(){
 
 renderSaldo();
 </script>
+
 </body>
 </html>
