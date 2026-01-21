@@ -1,107 +1,91 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Site Pausado</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+lass="btn secondary" onclick="closeAll()">Fechar</button>
+  </div>
+</div>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+<script>
+let saldo = 5000.00;
+const history = document.getElementById('history');
+const saldoEl = document.getElementById('saldo');
 
-        body {
-            background: #0f172a;
-            color: #ffffff;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+function format(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+function renderSaldo(){saldoEl.innerText = format(saldo)}
 
-        .container {
-            text-align: center;
-            max-width: 600px;
-            padding: 30px;
-            background: #020617;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.6);
-        }
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.innerText=msg; t.style.display='block';
+  setTimeout(()=>t.style.display='none',2500);
+}
 
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #facc15;
-        }
+function openPix(){pixModal.style.display='flex'}
+function openReceive(){receiveModal.style.display='flex'; gerarPix()}
+function openScan(){
+  const i=document.createElement("input");
+  i.type="file"; i.accept="image/*";
+  i.onchange=()=>{toast("QR lido (simulado)"); setTimeout(()=>toast("Pagamento concluído"),1200);}
+  i.click();
+}
+function openCard(){cardModal.style.display='flex'}
+function closeAll(){[pixModal,bioModal,receiveModal,receiptModal,cardModal].forEach(m=>m.style.display='none')}
 
-        .logo span {
-            display: block;
-            font-size: 14px;
-            font-weight: normal;
-            color: #94a3b8;
-        }
+function setAvatar(e){
+  const f=e.target.files[0];
+  if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{avatarImg.src=r.result;avatarImg.style.display="block";avatarIcon.style.display="none";}
+  r.readAsDataURL(f);
+}
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
+function biometria(){
+  if(!pixValor.value||parseFloat(pixValor.value)<=0) return alert("Valor inválido");
+  pixModal.style.display='none'; bioModal.style.display='flex';
+}
 
-        p {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #cbd5f5;
-            margin-bottom: 15px;
-        }
+function gerarCodigo(){return Math.random().toString(36).substr(2,10).toUpperCase()}
+function randomCode(n){return Math.random().toString(36).substr(2,n).toUpperCase()}
 
-        .alert {
-            background: #1e293b;
-            border-left: 5px solid #facc15;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-            font-size: 15px;
-        }
+function confirmarPix(){
+  bioModal.style.display='none';
+  const v=parseFloat(pixValor.value);
+  saldo-=v; renderSaldo();
+  const item=document.createElement("div");
+  item.className="item";
+  item.innerHTML=`<div>${pixNome.value}</div><div>- ${format(v)}</div>`;
+  history.prepend(item);
 
-        footer {
-            margin-top: 25px;
-            font-size: 13px;
-            color: #64748b;
-        }
-    </style>
-</head>
-<body>
+  const d=new Date();
+  receiptBody.innerHTML=`
+  <p><b>Para:</b> ${pixNome.value}</p>
+  <p><b>Chave:</b> ${pixChave.value}</p>
+  <p><b>Valor:</b> ${format(v)}</p>
+  <p><b>Data:</b> ${d.toLocaleDateString("pt-BR")}</p>
+  <p><b>Hora:</b> ${d.toLocaleTimeString("pt-BR")}</p>
+  <p><b>ID Autenticação:</b> AUT-${gerarCodigo()}</p>
+  <p><b>Protocolo:</b> PRT-${Math.floor(Math.random()*1e9)}</p>
+  <p><b>Status:</b> Concluído</p>`;
+  receiptModal.style.display='flex';
+}
 
-    <div class="container">
-        <div class="logo">
-            🚧 Site Pausado
-            <span>Manutenção Temporária</span>
-        </div>
+function gerarPix(){
+  const c="PIX-"+randomCode(20);
+  QRCode.toCanvas(qr,c,{width:180});
+  receiveInfo.innerHTML="Chave Pix: "+c;
+}
+function gerarBoleto(){
+  const b=Math.floor(1e46+Math.random()*9e46).toString().slice(0,47);
+  QRCode.toCanvas(qr,b,{width:180});
+  receiveInfo.innerHTML="Código de barras:<br>"+b;
+}
+function gerarLink(){
+  const l="https://pagar.me/"+randomCode(12);
+  QRCode.toCanvas(qr,l,{width:180});
+  receiveInfo.innerHTML="Link: "+l;
+}
 
-        <h1>Este site está temporariamente indisponível</h1>
+function downloadPDF(){
+  html2pdf().from(document.getElementById("receipt")).save("comprovante_simulado.pdf");
+}
 
-        <p>
-            O site encontra-se pausado no momento por motivos técnicos e administrativos.
-        </p>
-
-        <div class="alert">
-            <strong>Motivo principal:</strong><br>
-            Pendência relacionada ao pagamento de taxas necessárias para manter o site ativo no
-            <strong>GitHub Pages</strong>.
-        </div>
-
-        <p>
-            Para resolver este problema e reativar o site, favor entrar em contato com o
-            <strong>desenvolvedor responsável por este código</strong>.
-        </p>
-
-        <footer>
-            © 2026 • Todos os direitos reservados
-        </footer>
-    </div>
-
+renderSaldo();
+</script>
 </body>
 </html>
